@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   productionBrowserSourceMaps: true,
   images: {
-    formats: ['image/webp'],
+    formats: ['image/webp', 'image/jpeg', 'image/png'],
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
     // Important: return the modified config
