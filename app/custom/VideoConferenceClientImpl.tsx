@@ -16,6 +16,7 @@ import { KeyboardShortcuts } from '@/lib/KeyboardShortcuts';
 import { SettingsMenu } from '@/lib/SettingsMenu';
 import { useSetupE2EE } from '@/lib/useSetupE2EE';
 import { useLowCPUOptimizer } from '@/lib/usePerfomanceOptimiser';
+import { JoystickPanel } from '@/lib/JoystickPanel';
 
 export function VideoConferenceClientImpl(props: {
   liveKitUrl: string;
@@ -80,8 +81,14 @@ export function VideoConferenceClientImpl(props: {
 
   useLowCPUOptimizer(room);
 
+  const handleJoystickMove = (left: { x: number; y: number }, right: { x: number; y: number }) => {
+    const data = {'axes': [Number(left.x.toFixed(2)), Number(left.y.toFixed(2)), Number(right.x.toFixed(2)), Number(right.y.toFixed(2))]};
+    room.localParticipant.publishData(new TextEncoder().encode(JSON.stringify(data)), { reliable: false, topic: 'chat' });
+  };
+
   return (
     <div className="lk-room-container">
+      <JoystickPanel onJoystickMove={handleJoystickMove} />
       <RoomContext.Provider value={room}>
         <KeyboardShortcuts />
         <VideoConference
